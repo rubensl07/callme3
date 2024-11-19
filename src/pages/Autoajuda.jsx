@@ -57,12 +57,24 @@ const AjudaScreen = ({ onLoad }) => {
         };
 
         if (info.id) {
-            const result = await editAutoajuda(updatedInfo, info.id);
-            if(result){
-                location.reload()
+            if(titulo.length>50){
+                alert('Título muito longo')
             } else {
-                alert("Ocorreu um erro")
+                const result = await editAutoajuda(updatedInfo, info.id);
+                if (result) {
+                    const updatedList = listaAutoajuda.map(item =>
+                        item.id === info.id ? { ...item, ...updatedInfo } : item
+                    );
+                    setListaAutoajuda(updatedList);
+                    
+                    setEdit(false);
+                    setConteudo(false);
+                    setFoco(true);
+                } else {
+                    alert("Ocorreu um erro ao salvar as alterações");
+                }
             }
+
         } else {
             console.error("ID não encontrado!");
         }
